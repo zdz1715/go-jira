@@ -44,14 +44,14 @@ func TestUsersService_FindUsers(t *testing.T) {
 		Query: goutils.Ptr("."),
 		SearchOptions: &SearchOptions{
 			StartAt:    0,
-			MaxResults: 10,
+			MaxResults: 100,
 		},
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	t.Logf("%+v", reply)
+	t.Logf("len: %d, users: %+v", len(reply), reply)
 }
 
 func TestUsersService_FindUsersByQuery(t *testing.T) {
@@ -75,5 +75,5 @@ func TestUsersService_FindUsersByQuery(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Logf("%+v", reply)
+	t.Logf("len: %d, users: %+v", len(reply), reply)
 }

@@ -9,12 +9,13 @@ type UsersService service
 
 // User represents a Jira user.
 type User struct {
-	Self             string           `json:"self,omitempty" structs:"self,omitempty"`
-	AccountID        string           `json:"accountId,omitempty" structs:"accountId,omitempty"`
-	AccountType      string           `json:"accountType,omitempty" structs:"accountType,omitempty"`
-	Name             string           `json:"name,omitempty" structs:"name,omitempty"`
-	Key              string           `json:"key,omitempty" structs:"key,omitempty"`
-	Password         string           `json:"-"`
+	Self        string `json:"self,omitempty" structs:"self,omitempty"`
+	AccountID   string `json:"accountId,omitempty" structs:"accountId,omitempty"`
+	AccountType string `json:"accountType,omitempty" structs:"accountType,omitempty"`
+	Name        string `json:"name,omitempty" structs:"name,omitempty"`
+	Key         string `json:"key,omitempty" structs:"key,omitempty"`
+	Password    string `json:"-"`
+	// The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
 	EmailAddress     string           `json:"emailAddress,omitempty" structs:"emailAddress,omitempty"`
 	AvatarUrls       AvatarUrls       `json:"avatarUrls,omitempty" structs:"avatarUrls,omitempty"`
 	DisplayName      string           `json:"displayName,omitempty" structs:"displayName,omitempty"`
