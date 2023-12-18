@@ -2,6 +2,7 @@ package jira
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -95,4 +96,23 @@ func (s *IssuesService) GetProjectIssueType(ctx context.Context, opts *GetProjec
 		return nil, err
 	}
 	return issueType, nil
+}
+
+type GetCreateMetadataForProjectResult struct {
+	IssueTypes []*IssueType `json:"issueTypes"`
+	StartAt    int64        `json:"startAt"`
+	Total      int64        `json:"total"`
+	MaxResults int          `json:"maxResults"`
+}
+
+// GetCreateMetadataForProject
+//
+// Jira API docs: https://developer.atlassian.com/cloud/jira/platform/rest/v2/api-group-issues/#api-rest-api-2-issue-createmeta-projectidorkey-issuetypes-get
+func (s *IssuesService) GetCreateMetadataForProject(ctx context.Context, projectIdOrKey string, opts *SearchOptions) (*GetCreateMetadataForProjectResult, error) {
+	var apiEndpoint = fmt.Sprintf("/rest/api/2/issue/createmeta/%s/issuetypes", projectIdOrKey)
+	var result GetCreateMetadataForProjectResult
+	if err := s.client.Invoke(ctx, http.MethodGet, apiEndpoint, opts, &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

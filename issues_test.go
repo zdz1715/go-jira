@@ -27,3 +27,24 @@ func TestIssuesService_GetProjectIssueType(t *testing.T) {
 
 	t.Logf("%+v", reply)
 }
+
+func TestIssuesService_GetCreateMetadataForProject(t *testing.T) {
+	client, err := NewClient(testBasicAuthCredential, &Options{
+		ClientOpts: []ghttp.ClientOption{
+			ghttp.WithDebug(true),
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	reply, err := client.Issue.GetCreateMetadataForProject(context.Background(), "10000", &SearchOptions{
+		StartAt:    0,
+		MaxResults: 100,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("%+v", reply)
+}
