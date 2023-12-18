@@ -8,15 +8,28 @@ import (
 
 type IssuesService service
 
+// IssueRenderedFields represents rendered fields of a Jira issue.
+// Not all IssueFields are rendered.
+type IssueRenderedFields struct {
+	Resolutiondate string    `json:"resolutiondate,omitempty" structs:"resolutiondate,omitempty"`
+	Created        string    `json:"created,omitempty" structs:"created,omitempty"`
+	Duedate        string    `json:"duedate,omitempty" structs:"duedate,omitempty"`
+	Updated        string    `json:"updated,omitempty" structs:"updated,omitempty"`
+	Comments       *Comments `json:"comment,omitempty" structs:"comment,omitempty"`
+	Description    string    `json:"description,omitempty" structs:"description,omitempty"`
+}
+
 // Issue represents a Jira issue.
 type Issue struct {
-	Expand      string            `json:"expand,omitempty" structs:"expand,omitempty"`
-	ID          string            `json:"id,omitempty" structs:"id,omitempty"`
-	Self        string            `json:"self,omitempty" structs:"self,omitempty"`
-	Key         string            `json:"key,omitempty" structs:"key,omitempty"`
-	Changelog   *Changelog        `json:"changelog,omitempty" structs:"changelog,omitempty"`
-	Transitions []Transition      `json:"transitions,omitempty" structs:"transitions,omitempty"`
-	Names       map[string]string `json:"names,omitempty" structs:"names,omitempty"`
+	Expand         string               `json:"expand,omitempty" structs:"expand,omitempty"`
+	ID             string               `json:"id,omitempty" structs:"id,omitempty"`
+	Self           string               `json:"self,omitempty" structs:"self,omitempty"`
+	Key            string               `json:"key,omitempty" structs:"key,omitempty"`
+	Fields         *IssueFields         `json:"fields,omitempty" structs:"fields,omitempty"`
+	RenderedFields *IssueRenderedFields `json:"renderedFields,omitempty" structs:"renderedFields,omitempty"`
+	Changelog      *Changelog           `json:"changelog,omitempty" structs:"changelog,omitempty"`
+	Transitions    []Transition         `json:"transitions,omitempty" structs:"transitions,omitempty"`
+	Names          map[string]string    `json:"names,omitempty" structs:"names,omitempty"`
 }
 
 // IssueFields represents single fields of a Jira issue.
@@ -65,15 +78,21 @@ type Changelog struct {
 }
 
 type CreateIssueOptions struct {
-	//Fields     *IssueFields     `json:"fields,omitempty" query:"fields"`
-	//Properties []EntityProperty `json:"properties,omitempty" query:"properties"`
+	// query parameters
+	UpdateHistory bool `json:"-"`
+
+	Fields     *IssueFields     `json:"fields,omitempty" query:"fields"`
+	Properties []EntityProperty `json:"properties,omitempty" query:"properties"`
 }
 
 // Create creates an issue in Jira.
 //
 // Jira API docs: https://developer.atlassian.com/cloud/jira/platform/rest/v2/api-group-issues/#api-rest-api-2-issue-post
 func (s *IssuesService) Create(ctx context.Context, opts *CreateIssueOptions) (*Issue, error) {
-	const apiEndpoint = "/rest/api/2/issue"
+	apiEndpoint := "/rest/api/2/issue"
+	if opts != nil && opts.UpdateHistory {
+		apiEndpoint = "/rest/api/2/issue?updateHistory=true"
+	}
 	var issue Issue
 	if err := s.client.Invoke(ctx, http.MethodPost, apiEndpoint, opts, &issue); err != nil {
 		return nil, err
