@@ -81,8 +81,8 @@ type CreateIssueOptions struct {
 	// query parameters
 	UpdateHistory bool `json:"-"`
 
-	Fields     *IssueFields     `json:"fields,omitempty" query:"fields"`
-	Properties []EntityProperty `json:"properties,omitempty" query:"properties"`
+	Fields     *IssueFields      `json:"fields,omitempty" query:"fields"`
+	Properties []*EntityProperty `json:"properties,omitempty" query:"properties"`
 }
 
 // Create creates an issue in Jira.
