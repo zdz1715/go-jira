@@ -31,14 +31,14 @@ type Project struct {
 }
 
 type ListProjectOptions struct {
-	*SearchOptions
-	OrderBy    *string  `json:"orderBy,omitempty" query:"orderBy"`
-	Query      *string  `json:"query,omitempty" query:"query"`
-	Action     *string  `json:"action,omitempty" query:"action"`
-	TypeKey    *string  `json:"typeKey,omitempty" query:"typeKey"`
-	CategoryId *int64   `json:"categoryId,omitempty" query:"categoryId"`
-	Id         []int    `json:"id,omitempty" query:"id"`
-	Keys       []string `json:"keys,omitempty" query:"keys"`
+	*SearchOptions `query:",inline"`
+	OrderBy        *string  `query:"orderBy,omitempty"`
+	Query          *string  `query:"query,omitempty"`
+	Action         *string  `query:"action,omitempty"`
+	TypeKey        *string  `query:"typeKey,omitempty"`
+	CategoryId     *int64   `query:"categoryId,omitempty"`
+	Id             []int    `query:"id,omitempty"`
+	Keys           []string `query:"keys,omitempty"`
 }
 
 // ListProjects Returns a paginated list of projects visible to the user.
@@ -53,8 +53,8 @@ func (s *ProjectsService) ListProjects(ctx context.Context, opts *ListProjectOpt
 }
 
 type GetProjectOptions struct {
-	Expand     *string  `json:"expand,omitempty" query:"expand"`
-	Properties []string `json:"properties,omitempty" query:"properties"`
+	Expand     *string  `query:"expand,omitempty"`
+	Properties []string `query:"properties,omitempty"`
 }
 
 // Get returns a full representation of the project for the given issue key.

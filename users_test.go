@@ -11,7 +11,7 @@ import (
 func TestUsersService_GetAllUsers(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {
@@ -33,7 +33,7 @@ func TestUsersService_GetAllUsers(t *testing.T) {
 func TestUsersService_FindUsers(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {
@@ -57,7 +57,7 @@ func TestUsersService_FindUsers(t *testing.T) {
 func TestUsersService_FindUsersByQuery(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {

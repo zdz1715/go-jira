@@ -14,8 +14,7 @@ type service struct {
 }
 
 type Options struct {
-	ClientOpts         []ghttp.ClientOption
-	InitSkipCredential bool
+	ClientOpts []ghttp.ClientOption
 }
 
 type Client struct {
@@ -41,12 +40,11 @@ func NewClient(credential Credential, opts *Options) (*Client, error) {
 		clientOptions = append(clientOptions, opts.ClientOpts...)
 	}
 
-	clientOptions = append(clientOptions, ghttp.WithNot2xxError(&Error{}))
+	clientOptions = append(clientOptions, ghttp.WithNot2xxError(func() ghttp.Not2xxError {
+		return new(Error)
+	}))
 
-	cc, err := ghttp.NewClient(context.Background(), clientOptions...)
-	if err != nil {
-		return nil, err
-	}
+	cc := ghttp.NewClient(clientOptions...)
 
 	c := &Client{
 		cc:   cc,
@@ -60,12 +58,10 @@ func NewClient(credential Credential, opts *Options) (*Client, error) {
 	c.Issue = (*IssuesService)(&c.common)
 	c.Project = (*ProjectsService)(&c.common)
 
-	if opts.InitSkipCredential {
-		return c, nil
-	}
-
-	if err = c.SetCredential(credential); err != nil {
-		return nil, err
+	if credential != nil {
+		if err := c.SetCredential(credential); err != nil {
+			return nil, err
+		}
 	}
 
 	return c, nil
@@ -80,9 +76,7 @@ func (c *Client) SetCredential(credential Credential) error {
 		return err
 	}
 
-	if err := c.cc.SetEndpoint(credential.GetEndpoint()); err != nil {
-		return err
-	}
+	c.cc.SetEndpoint(credential.GetEndpoint())
 
 	if c.OAuth != nil {
 		c.OAuth.credential = credential
@@ -143,11 +137,11 @@ func (e *Error) Reset() {
 // Jira API docs: https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/#expansion
 type SearchOptions struct {
 	// StartAt: The starting index of the returned projects. Base index: 0.
-	StartAt int `json:"startAt,omitempty" query:"startAt"`
+	StartAt int `query:"startAt,omitempty"`
 	// MaxResults: The maximum number of projects to return per page. Default: 50.
-	MaxResults int `json:"maxResults,omitempty" query:"maxResults"`
+	MaxResults int `query:"maxResults,omitempty"`
 	// Expand: Expand specific sections in the returned issues
-	Expand string `json:"expand,omitempty" query:"expand"`
+	Expand string `query:"expand,omitempty"`
 }
 
 type Pagination[T any] struct {

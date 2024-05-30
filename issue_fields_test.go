@@ -10,7 +10,7 @@ import (
 func TestIssuesService_GetFields(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {

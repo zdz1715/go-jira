@@ -11,7 +11,7 @@ import (
 func TestIssuesService_GetProjectIssueType(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {
@@ -31,7 +31,7 @@ func TestIssuesService_GetProjectIssueType(t *testing.T) {
 func TestIssuesService_GetCreateMetadataForProject(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {

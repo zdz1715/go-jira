@@ -97,13 +97,13 @@ func (s *UsersService) GetAllUsers(ctx context.Context, search *SearchOptions) (
 }
 
 type FindUsersOptions struct {
-	*SearchOptions
+	*SearchOptions `query:",inline"`
 
 	// Query field will search users displayName and emailAddress
-	Query     *string `json:"query,omitempty" query:"query"`
-	Username  *string `json:"username,omitempty" query:"username"`
-	AccountId *string `json:"accountId,omitempty" query:"accountId"`
-	Property  *string `json:"property,omitempty" query:"property"`
+	Query     *string `query:"query,omitempty"`
+	Username  *string `query:"username,omitempty"`
+	AccountId *string `query:"accountId,omitempty"`
+	Property  *string `query:"property,omitempty"`
 }
 
 // FindUsers searches for user info from Jira:
@@ -120,12 +120,12 @@ func (s *UsersService) FindUsers(ctx context.Context, req *FindUsersOptions) ([]
 }
 
 type FindUsersByQueryOptions struct {
-	*SearchOptions
+	*SearchOptions `query:",inline"`
 
 	// JQL https://www.atlassian.com/zh/software/jira/guides/jql/overview
 	// `is assignee of PROJ` Returns the users that are assignees of at least one issue in project PROJ.
 	// `is assignee of (PROJ-1, PROJ-2)` Returns users that are assignees on the issues PROJ-1 or PROJ-2.
-	Query *string `json:"query,omitempty" query:"query"`
+	Query *string `query:"query,omitempty"`
 }
 
 // FindUsersByQuery

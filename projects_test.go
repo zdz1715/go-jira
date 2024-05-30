@@ -12,7 +12,7 @@ import (
 func TestProjectsService_ListProjects(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {
@@ -36,7 +36,7 @@ func TestProjectsService_ListProjects(t *testing.T) {
 func TestProjectsService_Get(t *testing.T) {
 	client, err := NewClient(testBasicAuthCredential, &Options{
 		ClientOpts: []ghttp.ClientOption{
-			ghttp.WithDebug(true),
+			ghttp.WithDebug(ghttp.DefaultDebug),
 		},
 	})
 	if err != nil {

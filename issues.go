@@ -101,8 +101,8 @@ func (s *IssuesService) Create(ctx context.Context, opts *CreateIssueOptions) (*
 }
 
 type GetProjectIssueTypeOptions struct {
-	ProjectId *string         `json:"projectId,omitempty" query:"projectId"`
-	Level     *IssueTypeLevel `json:"level,omitempty" query:"level"`
+	ProjectId *string         `query:"projectId,omitempty"`
+	Level     *IssueTypeLevel `query:"level,omitempty"`
 }
 
 // GetProjectIssueType
